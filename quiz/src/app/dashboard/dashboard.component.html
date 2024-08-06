@@ -1,0 +1,107 @@
+<div class="container">
+  <div class="row">
+    <div class="col-10">
+      <h2 class="text-center p-4">{{!newTest ? 'Test Results' : 'Create Test'}}</h2>
+    </div>
+    <div class="col-2 pt-4 mt-2 text-right">
+      <button type="button" class="btn btn-dark" (click)="newTest = !newTest">{{!newTest ? 'New Test' :
+        'Show Result'}}</button>
+      <!-- <button type="button" class="btn btn-dark" (click)="newTest = false" *ngIf="newTest">Show Result</button> -->
+    </div>
+  </div>
+  <table class="table table-striped" *ngIf="!newTest">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Test Title</th>
+        <th>Result</th>
+        <th>Duration</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="results.length > 0">
+      <tr *ngFor="let el of results">
+        <td>{{el.id}}</td>
+        <td>{{el.name}}</td>
+        <td>{{el.result}}%</td>
+        <td>{{el.duration}}</td>
+        <td>{{el.date | date}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="container mb-5" *ngIf="newTest">
+  <div class="row">
+    <div class="col-12">
+      <form [formGroup]="testForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+          <label for="name">Name of Test</label>
+          <input type="text" class="form-control" placeholder="Enter name" id="name" formControlName="name">
+        </div>
+
+        <div class="form-group">
+          <label for="desc">Description</label>
+          <textarea class="form-control" rows="3" id="desc" formControlName="description"></textarea>
+        </div>
+
+        <div class="row" formArrayName="questions">
+          <div class="col-6 pt-3 pb-5" *ngFor="let que of testForm.get('questions')['controls']; let i=index"
+            [formGroupName]="i">
+
+            <div class="form-group">
+              <label for="que">Question {{i+1}} :</label>
+              <textarea class="form-control" rows="2" id="que" formControlName="name"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="ans">Answer:</label>
+              <input type="ans" class="form-control" placeholder="Answer" id="ans" formControlName="ans1">
+              <div class="form-group form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" name="correct1" formControlName="correct1"> Is Correct
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ans">Answer:</label>
+              <input type="ans" class="form-control" placeholder="Answer" id="ans" formControlName="ans2">
+              <div class="form-group form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" name="correct2" formControlName="correct2"> Is Correct
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ans">Answer:</label>
+              <input type="ans" class="form-control" placeholder="Answer" id="ans" formControlName="ans3">
+              <div class="form-group form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" name="correct3" formControlName="correct3"> Is Correct
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ans">Answer:</label>
+              <input type="ans" class="form-control" placeholder="Answer" id="ans" formControlName="ans4">
+              <div class="form-group form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" name="correct4" formControlName="correct4"> Is Correct
+                </label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="text-center mt-3" *ngIf="!queLimit">
+          <button type="button" class="btn btn-primary" (click)="addMoreQuestions()">Add Questions</button>
+        </div>
+        <div class="text-center mt-3" *ngIf="submit">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
